@@ -1,0 +1,12 @@
+gradio
+segment_anything
+tqdm
+opencv-python
+scikit-image
+scikit-learn
+timm
+onnx
+onnxsim
+# onnxruntime
+onnxruntime-gpu
+pycocotools

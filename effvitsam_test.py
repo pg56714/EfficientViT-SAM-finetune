@@ -21,12 +21,7 @@ def main():
     device = "cuda" if torch.cuda.is_available() else "cpu"
     test_path = "./datasets/test"
     
-    # sam_model = create_sam_model(name="xl1", weight_url="./checkpoints/sam/xl1.pt").to(device).eval()
-    # sam_model = create_sam_model(name="xl1", weight_url="./checkpoints/200_0176.pt").to(device).eval()
-    # sam_model = create_sam_model(name="xl1", weight_url="./checkpoints/100_0243.pt").to(device).eval()
-    # sam_model = create_sam_model(name="xl1", weight_url="./checkpoints/50_0328.pt").to(device).eval()
-    # sam_model = create_sam_model(name="xl1", weight_url="./checkpoints/30_0449.pt").to(device).eval()
-    sam_model = create_sam_model(name="xl1", weight_url="./checkpoints/30.pt").to(device).eval()
+    sam_model = create_sam_model(name="xl1", weight_url="./checkpoints/sam/xl1.pt").to(device).eval()
     
     print(
         "Params: {}M".format(

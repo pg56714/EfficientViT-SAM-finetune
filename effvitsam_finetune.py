@@ -9,7 +9,7 @@ import torch
 import numpy as np
 
 from efficientvit.sam_model_zoo import create_sam_model
-from efficientvit.samcore.data_provider.utils import ResizeLongestSide, Normalize_and_Pad  # pip install pycocotools
+from efficientvit.samcore.data_provider.utils import ResizeLongestSide, Normalize_and_Pad
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
@@ -41,7 +41,7 @@ def main():
 
     img_all = get_training_files(training_path)
 
-    num_epochs = 20
+    num_epochs = 200
     for epoch in range(num_epochs):
         epoch_losses = []
         random.shuffle(img_all)
@@ -139,7 +139,9 @@ def main():
                 cv2.imwrite("./img_logs_sam/{}_{}.jpg".format(epoch, i), _save)
 
         print(f"EPOCH: {epoch}  Mean loss: {mean(epoch_losses)}")
-        torch.save(sam_model.state_dict(), f"./checkpoints/efficientvit_sam_{epoch}.pth")
+        # torch.save(sam_model.state_dict(), f"./checkpoints/efficientvit_sam_{epoch}.pt")
+        torch.save(sam_model.state_dict(), f"D:/checkpoints/{epoch}.pt")
+
 
 
 if __name__ == "__main__":

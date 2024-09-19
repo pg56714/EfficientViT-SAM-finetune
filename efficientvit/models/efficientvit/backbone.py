@@ -221,7 +221,7 @@ class EfficientViTLargeBackbone(nn.Module):
         # stage 0
         stage0 = [
             ConvLayer(
-                in_channels=3,
+                in_channels=in_channels,
                 out_channels=width_list[0],
                 stride=2,
                 norm=norm,
@@ -247,7 +247,11 @@ class EfficientViTLargeBackbone(nn.Module):
         for stage_id, (w, d) in enumerate(zip(width_list[1:], depth_list[1:]), start=1):
             stage = []
             block = self.build_local_block(
-                block="mb" if block_list[stage_id] not in ["mb", "fmb"] else block_list[stage_id],
+                block=(
+                    "mb"
+                    if block_list[stage_id] not in ["mb", "fmb"]
+                    else block_list[stage_id]
+                ),
                 in_channels=in_channels,
                 out_channels=w,
                 stride=2,

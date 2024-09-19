@@ -7,9 +7,13 @@ import torch
 import numpy as np
 
 from efficientvit.sam_model_zoo import create_sam_model
-from efficientvit.samcore.data_provider.utils import ResizeLongestSide, Normalize_and_Pad
+from efficientvit.samcore.data_provider.utils import (
+    ResizeLongestSide,
+    Normalize_and_Pad,
+)
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+
 
 def get_training_files(path):
     image_dir = os.path.join(path, "images")
@@ -20,15 +24,19 @@ def get_training_files(path):
 def main():
     device = "cuda" if torch.cuda.is_available() else "cpu"
     test_path = "./datasets/test"
-    
-    sam_model = create_sam_model(name="xl1", weight_url="./checkpoints/sam/xl1.pt").to(device).eval()
-    
+
+    # sam_model = create_sam_model(name="xl1", weight_url="./checkpoints/sam/xl1.pt").to(device).eval()
+    sam_model = (
+        create_sam_model(name="l0", weight_url="./checkpoints/200_0193.pt")
+        .to(device)
+        .eval()
+    )
+
     print(
         "Params: {}M".format(
             sum(p.numel() for p in sam_model.mask_decoder.parameters()) / 1e6
         )
     )
-
 
     with open("./datasets/sam_test.json", "r") as f:
         meta = json.load(f)
@@ -44,9 +52,13 @@ def main():
         # transform
         sam_trans = ResizeLongestSide(sam_model.image_size[0])
         original_image_size = image.shape[:2]
-            
-        image_tensor = torch.from_numpy(image).to(torch.float32).permute(2, 0, 1).unsqueeze(0)
-        resize_image = sam_trans.apply_image(image_tensor, original_image_size).squeeze(0)
+
+        image_tensor = (
+            torch.from_numpy(image).to(torch.float32).permute(2, 0, 1).unsqueeze(0)
+        )
+        resize_image = sam_trans.apply_image(image_tensor, original_image_size).squeeze(
+            0
+        )
         input_image_torch = resize_image.contiguous()
         input_size = tuple(input_image_torch.shape[-2:])
 
@@ -60,17 +72,21 @@ def main():
 
             box = torch.from_numpy(bboxes).to(torch.float32)
             box = sam_trans.apply_boxes(box, original_image_size).to(device)
-            
+
             if len(box.shape) == 2:
                 box = box[:, None, :]
 
-            processed_image = normalize_and_pad({
-                "image": input_image_torch,
-                "masks": torch.empty((0, *input_image_torch.shape[-2:]), dtype=torch.float32),
-                "points": torch.tensor([]),
-                "bboxs": box,
-                "shape": input_image_torch.shape[-2:]
-            })["image"]
+            processed_image = normalize_and_pad(
+                {
+                    "image": input_image_torch,
+                    "masks": torch.empty(
+                        (0, *input_image_torch.shape[-2:]), dtype=torch.float32
+                    ),
+                    "points": torch.tensor([]),
+                    "bboxs": box,
+                    "shape": input_image_torch.shape[-2:],
+                }
+            )["image"]
             processed_image = processed_image.to(device)
 
             processed_image = processed_image.unsqueeze(0)

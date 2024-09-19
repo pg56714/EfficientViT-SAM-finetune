@@ -3,10 +3,13 @@ import torch
 import numpy as np
 import gradio as gr
 from efficientvit.sam_model_zoo import create_sam_model
-from efficientvit.samcore.data_provider.utils import ResizeLongestSide, Normalize_and_Pad
+from efficientvit.samcore.data_provider.utils import (
+    ResizeLongestSide,
+    Normalize_and_Pad,
+)
 
 # Initialize SAM model
-sam_model = create_sam_model(name="xl1", weight_url="./checkpoints/200_0176.pt")
+sam_model = create_sam_model(name="xl1", weight_url="./checkpoints/best_model.pt")
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
@@ -22,7 +25,9 @@ def generate_mask_sam(frame):
 
     sam_trans = ResizeLongestSide(sam_model.image_size[0])
     original_image_size = image.shape[:2]
-    image_tensor = torch.from_numpy(image).to(torch.float32).permute(2, 0, 1).unsqueeze(0)
+    image_tensor = (
+        torch.from_numpy(image).to(torch.float32).permute(2, 0, 1).unsqueeze(0)
+    )
     resize_image = sam_trans.apply_image(image_tensor, original_image_size).squeeze(0)
     input_image_torch = resize_image.contiguous()
     input_size = tuple(input_image_torch.shape[-2:])
@@ -35,17 +40,21 @@ def generate_mask_sam(frame):
 
         box_torch = torch.as_tensor(box, dtype=torch.float, device=device).unsqueeze(0)
 
-        processed_image = normalize_and_pad({
-            "image": input_image_torch,
-            "masks": torch.empty((0, *input_image_torch.shape[-2:]), dtype=torch.float32),
-            "points": torch.tensor([]),
-            "bboxs": box,
-            "shape": input_image_torch.shape[-2:]
-        })["image"]
+        processed_image = normalize_and_pad(
+            {
+                "image": input_image_torch,
+                "masks": torch.empty(
+                    (0, *input_image_torch.shape[-2:]), dtype=torch.float32
+                ),
+                "points": torch.tensor([]),
+                "bboxs": box,
+                "shape": input_image_torch.shape[-2:],
+            }
+        )["image"]
         processed_image = processed_image.to(device)
 
         processed_image = processed_image.unsqueeze(0)
-        
+
         image_embedding = sam_model.image_encoder(processed_image)
         sparse_embeddings, dense_embeddings = sam_model.prompt_encoder(
             points=None,

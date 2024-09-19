@@ -9,6 +9,7 @@ from sklearn.metrics import (
 )
 from tqdm import tqdm
 
+
 def convert_to_white_mask(color_mask):
     gray_mask = cv2.cvtColor(color_mask, cv2.COLOR_BGR2GRAY)
     _, white_mask = cv2.threshold(gray_mask, 1, 255, cv2.THRESH_BINARY)
@@ -38,8 +39,8 @@ def evaluate_masks(true_mask, pred_mask):
 
     accuracy = accuracy_score(true_flat, pred_flat)
     precision = precision_score(true_flat, pred_flat, zero_division=0)
-    recall = recall_score(true_flat, pred_flat)
-    f1 = f1_score(true_flat, pred_flat)
+    recall = recall_score(true_flat, pred_flat, zero_division=0)
+    f1 = f1_score(true_flat, pred_flat, zero_division=0)
     # jaccard = jaccard_score(true_flat, pred_flat)
     iou = calculate_iou(true_mask, pred_mask)
 
@@ -62,7 +63,6 @@ def main():
         [],
         [],
         [],
-        # [],
         # [],
         [],
     )

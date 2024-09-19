@@ -10,3 +10,5 @@ onnxsim
 # onnxruntime
 onnxruntime-gpu
 pycocotools
+
+tensorboard

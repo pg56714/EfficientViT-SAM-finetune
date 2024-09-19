@@ -170,3 +170,9 @@ src
 # Etc
 .DS_Store
 .vscode
+
+# Custom
+/img_logs_sam
+/datasets
+/logs
+/results

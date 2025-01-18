@@ -2,6 +2,8 @@
 
 ## Getting Started
 
+[uv](https://docs.astral.sh/uv/)
+
 ```bash
 uv venv
 

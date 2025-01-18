@@ -23,13 +23,12 @@ def get_training_files(path):
 
 def main():
     device = "cuda" if torch.cuda.is_available() else "cpu"
+    # test_path = "./datasets/train"
     test_path = "./datasets/test"
 
-    # sam_model = create_sam_model(name="xl1", weight_url="./checkpoints/sam/xl1.pt").to(device).eval()
     sam_model = (
-        create_sam_model(name="l0", weight_url="./checkpoints/200_0193.pt")
-        .to(device)
-        .eval()
+        create_sam_model(name="xl1", weight_url="./checkpoints/sam/99.pt").to(device)
+        # .eval()
     )
 
     print(
@@ -38,6 +37,7 @@ def main():
         )
     )
 
+    # with open("./datasets/sam_train.json", "r") as f:
     with open("./datasets/sam_test.json", "r") as f:
         meta = json.load(f)
 

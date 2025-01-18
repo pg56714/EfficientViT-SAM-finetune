@@ -3,13 +3,13 @@
 ## Getting Started
 
 ```bash
-conda create --name efficientvit-sam-finetune python=3.10 -y
+uv venv
 
-conda activate efficientvit-sam-finetune
+.venv\Scripts\activate
 
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
-pip install -r requirements.txt
+uv pip install -r pyproject.toml
 ```
 
 ## Datasets Steps
@@ -33,25 +33,25 @@ Download the weights from the following links and save them in the `weights` dir
 ## Fine-tune
 
 ```bash
-python effvitsam_finetune.py
+uv run effvitsam_finetune.py
 ```
 
 ## Test
 
 ```bash
-python effvitsam_test.py
+uv run effvitsam_test.py
 ```
 
 ## Eval
 
 ```bash
-python effvitsam_eval.py
+uv run effvitsam_eval.py
 ```
 
 ## Demo
 
 ```bash
-python demo_app.py
+uv run demo_app.py
 ```
 
 ## Source

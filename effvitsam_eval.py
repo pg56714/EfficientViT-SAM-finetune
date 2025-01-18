@@ -16,16 +16,6 @@ def convert_to_white_mask(color_mask):
     return white_mask
 
 
-# Dice Coefficient = f1_score
-# def calculate_dsc(mask1, mask2):
-#     mask1 = (mask1 > 0).astype(np.uint8)
-#     mask2 = (mask2 > 0).astype(np.uint8)
-#     intersection = np.logical_and(mask1, mask2).sum()
-#     total = mask1.sum() + mask2.sum()
-#     dsc = (2.0 * intersection) / total if total != 0 else 0
-#     return dsc
-
-
 def calculate_iou(mask1, mask2):
     intersection = np.logical_and(mask1, mask2).sum()
     union = np.logical_or(mask1, mask2).sum()
@@ -41,29 +31,27 @@ def evaluate_masks(true_mask, pred_mask):
     precision = precision_score(true_flat, pred_flat, zero_division=0)
     recall = recall_score(true_flat, pred_flat, zero_division=0)
     f1 = f1_score(true_flat, pred_flat, zero_division=0)
-    # jaccard = jaccard_score(true_flat, pred_flat)
     iou = calculate_iou(true_mask, pred_mask)
 
-    # return accuracy, precision, recall, f1, jaccard, iou
     return accuracy, precision, recall, f1, iou
 
 
 def main():
     pred_mask_dir = "./results/sam/labels/images/"
     true_mask_dir = "./datasets/test/labels/"
+    # true_mask_dir = "./datasets/train/labels/"
+
     (
         accuracy_scores,
         precision_scores,
         recall_scores,
         f1_scores,
-        # dsc_scores,
         iou_scores,
     ) = (
         [],
         [],
         [],
         [],
-        # [],
         [],
     )
 
@@ -86,16 +74,12 @@ def main():
         pred_mask = convert_to_white_mask(pred_mask)
         true_mask = convert_to_white_mask(true_mask)
 
-        # dsc = calculate_dsc(pred_mask, true_mask)
-        # dsc_scores.append(dsc)
-
         accuracy, precision, recall, f1, iou = evaluate_masks(true_mask, pred_mask)
 
         accuracy_scores.append(accuracy)
         precision_scores.append(precision)
         recall_scores.append(recall)
         f1_scores.append(f1)
-        # jaccard_scores.append(jaccard)
         iou_scores.append(iou)
 
     # Calculate and print average metrics after processing all images
@@ -104,8 +88,6 @@ def main():
     print(f"Average Recall: {np.mean(recall_scores):.4f}")
     print(f"Average F1 Score: {np.mean(f1_scores):.4f}")
     print(f"Average mIoU: {np.mean(iou_scores):.4f}")
-    # print(f"Average DSC: {np.mean(dsc_scores):.4f}")
-    # Dice Coefficient is the same as F1 Score for binary classification
 
 
 if __name__ == "__main__":

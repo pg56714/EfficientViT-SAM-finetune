@@ -9,8 +9,6 @@ uv venv
 
 .venv\Scripts\activate
 
-uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-
 uv pip install -r pyproject.toml
 ```
 

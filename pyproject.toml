@@ -12,10 +12,23 @@ dependencies = [
   "segment-anything>=1.0",
   "tensorboard>=2.18.0",
   "timm>=1.0.13",
+  "torch>=2.4.1",
+  "torchaudio>=2.4.1",
+  "torchvision>=0.19.1",
   "tqdm>=4.67.1",
 ]
 description = "Add your description here"
 name = "efficientvit-sam-finetune"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 version = "0.1.0"
+
+[tool.uv.sources]
+torch = {index = "pytorch-cu121"}
+torchaudio = {index = "pytorch-cu121"}
+torchvision = {index = "pytorch-cu121"}
+
+[[tool.uv.index]]
+explicit = true
+name = "pytorch-cu121"
+url = "https://download.pytorch.org/whl/cu121"

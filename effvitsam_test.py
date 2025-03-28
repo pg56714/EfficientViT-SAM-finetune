@@ -27,7 +27,7 @@ def main():
     test_path = "./datasets/test"
 
     sam_model = (
-        create_sam_model(name="xl1", weight_url="./checkpoints/sam/99.pt")
+        create_sam_model(name="xl1", weight_url="./checkpoints/sam/99_0211.pt")
         .to(device)
         .eval()
     )

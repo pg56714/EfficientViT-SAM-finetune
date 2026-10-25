@@ -12,6 +12,8 @@ uv venv
 uv pip install -r pyproject.toml
 ```
 
+PyTorch is installed from the CUDA 12.6 wheel index (`pytorch-cu126` in `pyproject.toml`), which needs an NVIDIA driver that supports CUDA 12.6 or newer.
+
 ## Datasets Steps
 
 1. Download from the [SOBA_v2-Datasets](https://drive.google.com/drive/folders/1MKxyq3R6AUeyLai9i9XWzG2C_n5f0ppP) and place the files inside the `datasets` folder.

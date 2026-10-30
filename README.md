@@ -1,5 +1,7 @@
 # EfficientViT-SAM-finetune
 
+> **Security:** see [SECURITY.md](SECURITY.md) for known dependency issues.
+
 ## Getting Started
 
 [uv](https://docs.astral.sh/uv/)
@@ -11,6 +13,8 @@ uv venv
 
 uv pip install -r pyproject.toml
 ```
+
+PyTorch is installed from the CUDA 12.6 wheel index (`pytorch-cu126` in `pyproject.toml`), which needs an NVIDIA driver that supports CUDA 12.6 or newer.
 
 ## Datasets Steps
 
@@ -26,9 +30,9 @@ Organized [SOBA_v2-Datasets](https://drive.google.com/drive/folders/1561wGAf0oik
 
 ### Weights
 
-Download the weights from the following links and save them in the `weights` directory.
+Download the weights from the following links and save them in the `checkpoints/sam` directory.
 
-[EfficientViT-SAM-XL1](https://huggingface.co/han-cai/efficientvit-sam/resolve/main/xl1.pt)
+[EfficientViT-SAM-XL1](https://huggingface.co/mit-han-lab/efficientvit-sam/resolve/main/efficientvit_sam_xl1.pt) (save it as `xl1.pt`)
 
 ## Fine-tune
 

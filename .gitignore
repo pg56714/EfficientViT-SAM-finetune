@@ -176,3 +176,9 @@ src
 /datasets
 /logs
 /results
+
+# Local environment, weights and training outputs
+checkpoints/*
+!checkpoints/.gitkeep
+img_logs_sam/*
+!img_logs_sam/.gitkeep
